@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <title>GU.com</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'main/css/main.css'%}">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <h1>GU</h1>
+        <h6>Paris</h6>
+      </div>
+    </header>
+
+<div class='about'>
+    <button onclick="window.location.href='http://127.0.0.1:8000'">
+        <span>
+            home
+        </span>
+    </button>
+    <button class='home-btn' onclick="window.location.href='http://127.0.0.1:8000/about/'">
+        <span>
+            about
+        </span>
+    </button>
+    <button class='service-btn' onclick="window.location.href='http://127.0.0.1:8000/service/'">
+        <span>
+            service
+        </span>
+    </button>
+     <button class='contact-btn' onclick="window.location.href='http://127.0.0.1:8000/contacts/'">
+        <span>
+            contacts
+        </span>
+    </button>
+     <button class='cart-btn' onclick="window.location.href='http://127.0.0.1:8000/cart/'">
+        <span>
+            cart
+        </span>
+    </button>
+<!--
+<button class='login-btn' onclick="window.location.href='http://127.0.0.1:8000/login/'">
+    <span>
+        login
+    </span>
+</button>
+-->
+    <!--
+ <button class="language-toggle-btn" onclick="toggleLanguage()">
+        <span id="language-toggle-text">Eng</span>
+ </button>
+ -->
+</div>
+
+<button onclick="scrollToTop()" id="scrollButton" title="Наверх">&#8593;</button>
+<section class="photos">
+  <div class="photo-item">
+    <img src="static/main/img/number1.jpg">
+    <button onclick="window.location.href='http://127.0.0.1:8000/lovers/'">
+      <span>
+        Details
+      </span>
+    </button>
+  </div>
+  <div class="photo-item">
+    <img src="static/main/img/number2.jpg">
+    <button onclick="window.location.href='http://127.0.0.1:8000/bones/'" >
+      <span>
+        Details
+      </span>
+    </button>
+  </div>
+  <div class="photo-item">
+    <img src="static/main/img/number3.jpg">
+    <button onclick="window.location.href='http://127.0.0.1:8000/devil/'" >
+      <span>
+        Details
+      </span>
+    </button>
+  </div>
+  <div class="photo-item">
+    <img src="static/main/img/number1.jpg">
+    <button onclick="window.location.href='http://127.0.0.1:8000'" >
+      <span>
+        pass
+      </span>
+    </button>
+  </div>
+  <div class="photo-item">
+    <img src="static/main/img/number1.jpg">
+    <button onclick="window.location.href='http://127.0.0.1:8000'" >
+      <span>
+        pass
+      </span>
+    </button>
+  </div>
+  <div class="photo-item">
+    <img src="static/main/img/number1.jpg">
+    <button onclick="window.location.href='http://127.0.0.1:8000'" >
+      <span>
+        pass
+      </span>
+    </button>
+  </div>
+   <div class="photo-item">
+    <img src="static/main/img/number1.jpg">
+    <button onclick="window.location.href='http://127.0.0.1:8000'" >
+      <span>
+        pass
+      </span>
+    </button>
+  </div>
+  <div class="photo-item">
+    <img src="static/main/img/number1.jpg">
+    <button onclick="window.location.href='http://127.0.0.1:8000'" >
+      <span>
+        pass
+      </span>
+    </button>
+  </div>
+  <div class="photo-item">
+    <img src="static/main/img/number1.jpg">
+    <button onclick="window.location.href='http://127.0.0.1:8000'" >
+      <span>
+        pass
+      </span>
+    </button>
+  </div>
+</section>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© GU, 2023</p>
+        <p>The first fashion house in Russia</p>
+      </div>
+    </footer>
+  <script src="{% static 'main/js/scrollToTop.js' %}"></script>
+  <script>
+      function toggleLanguage() {
+        var languageToggleText = document.getElementById('language-toggle-text');
+        var currentLanguage = languageToggleText.innerHTML;
+
+        if (currentLanguage === 'Eng') {
+          languageToggleText.innerHTML = 'Ru';
+          // Здесь вы можете добавить код для переключения языка на русский
+        } else {
+          languageToggleText.innerHTML = 'Eng';
+          // Здесь вы можете добавить код для переключения языка на английский
+        }
+      }
+    </script>
+  </body>
+</html>
+
+

@@ -1,0 +1,170 @@
+h1, h4, h6 {
+  text-align: center;
+}
+
+section.description {
+  margin-top: 70px;
+}
+
+.photos {
+  font-size: 0;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+   padding: 0 0 0 120px;
+  box-sizing: border-box;
+  position: relative;
+  margin-top: 20px;
+}
+
+.photos div {
+  position: relative;
+  margin-bottom: 20px;
+  width: 30%;
+  margin-left: auto; /* Move the photo items to the right */
+  margin-right: auto; /* Move the photo items to the left */
+}
+
+.photos img {
+  display: block;
+  width: 75%;
+  border-radius: 5%;
+  margin-bottom: 10px;
+}
+
+button {
+  outline: none;
+  cursor: pointer;
+  border: none;
+  padding: 0.9rem 2rem;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  position: absolute;
+  bottom: 0;
+  left: 37%;
+  transform: translateX(-50%);
+  letter-spacing: 0.05rem;
+  font-weight: 700;
+  font-size: 17px;
+  border-radius: 500px;
+  overflow: hidden;
+  background: #66ff66;  /* цвет кнопки после нажатие #7fc7ed*/
+  color: ghostwhite;
+}
+
+button span {
+  position: relative;
+  z-index: 10;
+  transition: color 0.4s;
+}
+
+button:hover span {
+  color: black;
+}
+
+button::before,
+button::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+button::before {
+  content: "";
+  background: #000;
+  width: 120%;
+  left: -10%;
+  transform: skew(30deg);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+}
+
+button:hover::before {
+  transform: translate3d(100%, 0, 0);
+}
+
+.working li {
+  list-style: none;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
+  margin-bottom: 70px;
+}
+
+.working img {
+  width: 32.5%;
+  border-radius: 5%;
+  margin: 0 2.5%;
+}
+
+.site-footer {
+  position: absolute;
+  bottom: 120;
+  text-align: center;
+  width: 100%;
+}
+
+.about {
+  position: absolute;
+  top: 95px;
+  left: 100px;
+}
+body {
+  background-color: #7fc7ed;
+}
+
+/*
+.photos img:hover {
+  transform: scale(1.1);            косяк при наводке увелич мастаб фото при наведение
+  transition: transform 0.3s ease-in-out;
+}
+*/
+#scrollButton {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 50px;
+  left: 1850px;
+  z-index: 50;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #f2f2f2;
+  color: black;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+#scrollButton:hover {
+  background-color: #555;
+  color: white;
+}
+
+.home-btn {
+    margin-left: 130px;
+}
+.service-btn {
+    margin-left: 265px;
+}
+.contact-btn {
+    margin-left: 420px;
+}
+.cart-btn {
+    margin-left: 1700px;
+}
+.language-toggle-btn {
+    margin-left: 1560px;
+}
+
+
+
+
+
