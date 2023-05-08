@@ -78,3 +78,18 @@ button:hover::before {
     top: 95px;
     left: 100px;
 }
+
+.site-footer {
+  position: absolute;
+  bottom: -150px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  background-color: #7fc7ed;
+  padding: 10px 0;
+}
+
+.site-footer .container {
+  max-width: 960px;
+  margin: 0 auto;
+}

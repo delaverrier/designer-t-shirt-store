@@ -1,0 +1,185 @@
+h1, h4, h6 {
+  text-align: center;
+}
+/*
+body {
+  background: linear-gradient(to bottom, #7fc7ed 0%, #ff0000 100%);
+}
+*/
+body {
+  background: #7fc7ed;
+}
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+
+.delivery-options, .payment-options, .returns-policy {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+ul {
+  list-style: none;
+}
+
+ul li:before {
+  content: "";
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* add this to center the cards vertically */
+  gap: 50px; /* increase or decrease this value as desired */
+  margin-top: 150px; /* add this to add some space above the cards */
+  flex-wrap: wrap; /* add this to wrap the cards if they don't fit in one row */
+}
+
+
+.flip-card {
+  background-color: transparent;
+  width: 250px; /* increase this value to enlarge the cards */
+  height: 350px; /* increase this value to enlarge the cards */
+  perspective: 1000px;
+  font-family: sans-serif;
+}
+
+.title {
+  font-size: 1.5em;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 110%;
+  height: 110%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  box-shadow: 0 8px 14px 0 rgba(0,0,0,0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 125%;
+  height: 125%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 1px solid #5cafe2;
+  border-radius: 1rem;
+}
+
+.flip-card-front {
+  background: linear-gradient(120deg, #5cafe2 60%, #8fcce9 88%, #6cb9e4 40%, rgba(125, 194, 238, 0.603) 48%);
+  color: white;
+}
+
+
+.flip-card-back {
+  background: linear-gradient(120deg, #5cafe2 30%, #8fcce9 88%, #6cb9e4 40%, #7abbe7 78%);
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.flip-card-front p, .flip-card-back p {
+  font-size: 1.2em; /* увеличьте значение, если нужно еще больше шрифт */
+}
+
+button {
+  outline: none;
+  cursor: pointer;
+  border: none;
+  padding: 0.9rem 2rem;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  letter-spacing: 0.05rem;
+  font-weight: 700;
+  font-size: 17px;
+  border-radius: 500px;
+  overflow: hidden;
+  background: #66ff66;  /* цвет кнопки после нажатие #7fc7ed*/
+  color: ghostwhite;
+}
+
+button span {
+  position: relative;
+  z-index: 10;
+  transition: color 0.4s;
+}
+
+button:hover span {
+  color: black;
+}
+
+button::before,
+button::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+button::before {
+  content: "";
+  background: #000;
+  width: 120%;
+  left: -10%;
+  transform: skew(30deg);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+}
+
+button:hover::before {
+  transform: translate3d(100%, 0, 0);
+}
+
+.back {
+    position: absolute;
+    top: 95px;
+    left: 100px;
+}
+
+
+.gu-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  font-size: 200px;
+  color: rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+}
+
+.site-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  background-color: #7fc7ed;
+  padding: 10px 0;
+}
+
+.site-footer .container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+

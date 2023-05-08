@@ -19,7 +19,6 @@ body {
   margin-left: 50px;
 }
 
-
 button {
   outline: none;
   cursor: pointer;
@@ -37,7 +36,7 @@ button {
   font-size: 17px;
   border-radius: 500px;
   overflow: hidden;
-  background: #66ff66;  /* цвет кнопки после нажатие #7fc7ed*/
+  background: #66ff66;  /* цвет кнопки после нажатия #7fc7ed*/
   color: ghostwhite;
 }
 
@@ -73,8 +72,24 @@ button::before {
 button:hover::before {
   transform: translate3d(100%, 0, 0);
 }
+
 .back {
     position: absolute;
     top: 95px;
     left: 100px;
+}
+
+.site-footer {
+  position: absolute;
+  bottom: -150px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  background-color: #7fc7ed;
+  padding: 10px 0;
+}
+
+.site-footer .container {
+  max-width: 960px;
+  margin: 0 auto;
 }
