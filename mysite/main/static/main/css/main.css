@@ -160,11 +160,15 @@ body {
 .cart-btn {
     margin-left: 1700px;
 }
-.language-toggle-btn {
-    margin-left: 1560px;
+.register-btn {
+    margin-left: 1500px;
 }
-
-
+.login-btn {
+    margin-left: 1300px;
+}
+.out-btn {
+    margin-left: 1550px;
+}
 
 
 

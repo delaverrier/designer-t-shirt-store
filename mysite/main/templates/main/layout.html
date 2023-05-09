@@ -41,13 +41,29 @@
             cart
         </span>
     </button>
-<!--
-<button class='login-btn' onclick="window.location.href='http://127.0.0.1:8000/login/'">
-    <span>
-        login
-    </span>
-</button>
--->
+
+  {% if user.is_authenticated %}
+        <!-- Кнопка выхода -->
+        <button class='out-btn' onclick="window.location.href='{% url 'logout' %}'">
+            <span>
+                Выход
+            </span>
+        </button>
+    {% else %}
+        <!-- Кнопка регистрации -->
+        <button class='register-btn' onclick="window.location.href='{% url 'register' %}'">
+            <span>
+                Регистрация
+            </span>
+        </button>
+        <!-- Кнопка входа -->
+        <button class='login-btn' onclick="window.location.href='{% url 'login' %}'">
+            <span>
+                Вход
+            </span>
+        </button>
+    {% endif %}
+
     <!--
  <button class="language-toggle-btn" onclick="toggleLanguage()">
         <span id="language-toggle-text">Eng</span>
