@@ -1,0 +1,121 @@
+h1, h6, h4 {
+  text-align: center;
+}
+
+body {
+  background-color: #7fc7ed;
+}
+
+.photos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-avatar {
+  display: block;
+  margin: 0 auto;
+  width: 300px; /* Задайте нужную вам ширину */
+  height: 300px; /* Задайте нужную вам высоту */
+  border-radius: 50%; /* Устанавливает форму круга */
+  object-fit: cover; /* Обрезает изображение, чтобы оно полностью заполнило область */
+}
+
+.container {
+  text-align: center;
+}
+
+.profile-info {
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-top: 100px; /* Добавьте нужное значение отступа сверху */
+}
+
+.profile-avatar {
+  width: 300px; /* Задайте нужную вам ширину */
+  height: 300px; /* Задайте нужную вам высоту */
+  border-radius: 50%; /* Устанавливает форму круга */
+  object-fit: cover; /* Обрезает изображение, чтобы оно полностью заполнило область */
+}
+
+.edit-profile-link {
+  display: block;
+  margin-top: 10px;
+}
+
+button {
+  outline: none;
+  cursor: pointer;
+  border: none;
+  padding: 0.9rem 2rem;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  letter-spacing: 0.05rem;
+  font-weight: 700;
+  font-size: 17px;
+  border-radius: 500px;
+  overflow: hidden;
+  background: #66ff66;  /* цвет кнопки после нажатия #7fc7ed*/
+  color: ghostwhite;
+}
+
+button span {
+  position: relative;
+  z-index: 10;
+  transition: color 0.4s;
+}
+
+button:hover span {
+  color: black;
+}
+
+button::before,
+button::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+button::before {
+  content: "";
+  background: #000;
+  width: 120%;
+  left: -10%;
+  transform: skew(30deg);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+}
+
+button:hover::before {
+  transform: translate3d(100%, 0, 0);
+}
+
+.back {
+    position: absolute;
+    top: 95px;
+    left: 100px;
+}
+
+.site-footer {
+  position: absolute;
+  bottom: -150px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  background-color: #7fc7ed;
+  padding: 10px 0;
+}
+
+.site-footer .container {
+  max-width: 960px;
+  margin: 0 auto;
+}

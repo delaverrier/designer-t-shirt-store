@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'main/css/profile.css' %}">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container d-flex flex-column justify-content-center align-items-center">
+            <h1>GU</h1>
+            <h6>Paris</h6>
+        </div>
+    </header>
+    <div class="back">
+        <button onclick="window.location.href='{% url 'home' %}'">
+            <span>Back</span>
+        </button>
+    </div>
+<div class="profile-wrapper">
+    <div class="container">
+        <h2>Profile</h2>
+        {% if profile.first_name and profile.last_name %}
+            <h3>{{ profile.first_name }} {{ profile.last_name }}</h3>
+            <a href="{% url 'edit_profile' %}" class="edit-profile-link">Edit Name and add Avatar</a>
+        {% else %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_table }}
+                {% if form.errors %}
+                    <div class="error">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% comment %} <button type="submit">Save</button> {% endcomment %}
+            </form>
+        {% endif %}
+
+       {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" alt="Avatar" class="profile-avatar">
+        {% else %}
+            <p>No avatar uploaded</p>
+        {% endif %}
+
+    </div>
+</div>
+    <footer class="site-footer">
+        <div class="container">
+            <p>© GU, 2023</p>
+            <p>The first fashion house in Russia</p>
+        </div>
+    </footer>
+</body>
+</html>

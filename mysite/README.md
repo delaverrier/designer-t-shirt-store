@@ -4,7 +4,7 @@
 
 ## Установка
 
-1. Склонируйте репозиторий: `git clone https://github.com/your/repository.git`
+1. Склонируйте репозиторий: `git clone https://github.com/DeLaVerrierr/pythonmysite`
 2. Создайте и активируйте виртуальное окружение: `python -m venv venv` и `source venv/bin/activate`
 3. Установите зависимости: `pip install -r requirements.txt`
 4. Создайте базу данных: `python manage.py migrate`

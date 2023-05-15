@@ -49,6 +49,11 @@
                 Выход
             </span>
         </button>
+     <button class='profile-btn' onclick="window.location.href='{% url 'profile' %}'">
+            <span>
+                profile
+            </span>
+        </button>
     {% else %}
         <!-- Кнопка регистрации -->
         <button class='register-btn' onclick="window.location.href='{% url 'register' %}'">

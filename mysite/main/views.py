@@ -11,7 +11,9 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from .forms import *
 from .models import *
-
+from .forms import ProfileForm
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 
 def index(request):
     return render(request, 'main/index.html')
@@ -66,10 +68,55 @@ class LogoutUser(LogoutView):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegisterUserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('register')  # перенаправляем пользователя на страницу входа после успешной регистрации
+            return redirect('home')  # перенаправляем пользователя на страницу входа после успешной регистрации
     else:
-        form = UserCreationForm()
+        form = RegisterUserForm()
     return render(request, 'main/register.html', {'form': form})
+
+@login_required
+def profile(request):
+    user = request.user
+    profile = user.profile if hasattr(user, 'profile') else None
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=profile)
+
+    context = {
+        'form': form,
+        'profile': profile
+    }
+    return render(request, 'main/profile.html', context)
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    profile = user.profile if hasattr(user, 'profile') else None
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        if profile:
+            form = ProfileForm(instance=profile)
+        else:
+            form = ProfileForm()
+
+    context = {
+        'form': form,
+        'profile': profile
+    }
+    return render(request, 'main/edit_profile.html', context)
+
+
+def casino(request):
+    return render(request, 'main/casino.html')

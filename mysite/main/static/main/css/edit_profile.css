@@ -66,9 +66,9 @@ button:hover::before {
 }
 
 .back {
-    position: absolute;
-    top: 95px;
-    left: 100px;
+  position: absolute;
+  top: 95px;
+  left: 100px;
 }
 
 .site-footer {
@@ -86,3 +86,20 @@ button:hover::before {
   margin: 0 auto;
 }
 
+.container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+h2 {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+}
