@@ -9,29 +9,60 @@
 </head>
 
 <body>
- <header class="site-header">
-        <div class="container d-flex flex-column justify-content-center align-items-center">
-            <h1>GU</h1>
-            <h6>Paris</h6>
-        </div>
-    </header>
-<div class ='back'>
-    <button onclick="window.history.back()">
+<header class="site-header">
+    <div class="container d-flex flex-column justify-content-center align-items-center">
+        <h1>GU</h1>
+        <h6>Paris</h6>
+    </div>
+</header>
+<div class='back'>
+   <button onclick="window.location.href='{% url 'home' %}'">
         <span>
             back
         </span>
     </button>
 </div>
+<div class="cart-items">
+    {% for item in cart_items %}
+    <div class="cart-item">
+        <div class="item-image">
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
+        </div>
+        <div class="item-details">
+            <h3>{{ item.product.title }}</h3>
+            <p class="item-price">Price: ${{ item.price }}</p>
+            <p class="item-quantity">Quantity: {{ item.quantity }}</p>
+            <p class="item-subtotal">Subtotal: ${{ item.subtotal }}</p>
+        </div>
+    </div>
+    {% empty %}
+    <p class="empty">Your cart is empty.</p>
+    {% endfor %}
+</div>
+
+{% if cart_items %}
+<div class="total">Total: ${{ total }}</div>
+{% endif %}
+
+{% if cart_items %}
+<div class="button-container">
+  <form action="{% url 'clear_cart' %}" method="post">
+    {% csrf_token %}
+    <button class="clear-cart-button" type="submit">Clear Cart</button>
+  </form>
+  <button class="pay-button" disabled>Pay</button>
+</div>
 
 
- <footer class="site-footer">
-      <div class="container">
+{% endif %}
+
+
+<footer class="site-footer">
+    <div class="container">
         <p>© GU, 2023</p>
         <p>The first fashion house in Russia</p>
-      </div>
- </footer>
+    </div>
+</footer>
 
 </body>
 </html>
-
-

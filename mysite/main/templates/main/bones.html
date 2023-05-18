@@ -28,18 +28,23 @@
     </section>
 
    <section class="photos">
-        <div>
-            <h1>Price: $100</h1>
-            <h4>Composition: 95% cotton and 5% elastane</h4>
-        </div>
-    </section>
     <div>
-       <button onclick="window.location.href='http://127.0.0.1:8000/cart/'" >
-        <span>
-          Add to Cart
-        </span>
-      </button>
+        <h1>Price: ${{ item.price }}</h1>
+        <h4>Composition: 95% cotton and 5% elastane</h4>
     </div>
+</section>
+
+
+<div class="add">
+<form method="post" action="{% url 'add_to_cart' item.id %}">
+  {% csrf_token %}
+  <input type="hidden" name="price" value="{{ item.price }}">
+  <button type="submit">Add to Cart</button>
+</form>
+
+</div>
+
+
 <footer class="site-footer">
     <div class="container">
         <p>© GU, 2023</p>

@@ -14,18 +14,28 @@ from .models import *
 from .forms import ProfileForm
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from .models import Product, CartItem
+from django.contrib.auth import get_user
+import uuid
+from django.contrib.auth.models import User
+from django.shortcuts import redirect
+from django.contrib.sessions.models import Session
 
 def index(request):
     return render(request, 'main/index.html')
 def cart(request):
     return render(request, 'main/cart.html')
 def lovers(request):
-    return render(request, 'main/lovers.html')
+    product = Product.objects.get(pk=1)
+    return render(request, 'main/lovers.html',{'item': product})
 def bones(request):
-    return render(request, 'main/bones.html')
+    product = Product.objects.get(pk=2)
+    return render(request, 'main/bones.html',{'item': product})
 
 def devil(request):
-    return render(request, 'main/devil.html')
+    product = Product.objects.get(pk=3)
+    return render(request, 'main/devil.html', {'item': product})
+
 
 def about(request):
     return render(request, 'main/about.html')
@@ -120,3 +130,49 @@ def edit_profile(request):
 
 def casino(request):
     return render(request, 'main/casino.html')
+
+
+def add_to_cart(request, product_id):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        user = User.objects.create_user(username=str(uuid.uuid4()), password='')
+        user_id = user.id
+        request.session['user_id'] = user_id
+
+    product = get_object_or_404(Product, pk=product_id)
+
+    try:
+        cart_item = CartItem.objects.get(product=product, user_id=user_id)
+        cart_item.quantity += 1
+    except CartItem.DoesNotExist:
+        cart_item = CartItem(product=product, user_id=user_id, quantity=1, price=product.price)
+
+    cart_item.subtotal = cart_item.quantity * cart_item.price
+    cart_item.save()
+
+    return redirect('cart')
+
+
+def cart(request):
+    user_id = request.session.get('user_id')
+    if user_id:
+        user = User.objects.get(id=user_id)
+        cart_items = CartItem.objects.filter(user=user)
+    else:
+        cart_items = []
+
+    total = sum(item.subtotal for item in cart_items)
+    return render(request, 'main/cart.html', {'cart_items': cart_items, 'total': total})
+
+
+def clear_cart(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        user = User.objects.create_user(username=str(uuid.uuid4()), password='')
+        user_id = user.id
+        request.session['user_id'] = user_id
+
+    CartItem.objects.filter(user_id=user_id).delete()
+
+    return redirect('cart')
+

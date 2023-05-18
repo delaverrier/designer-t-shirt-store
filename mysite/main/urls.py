@@ -14,10 +14,12 @@ urlpatterns = [
     path('about/',views.about),
     path('contacts/',views.contacts),
     path('service/',views.service),
+    path('clear-cart/', views.clear_cart, name='clear_cart'),
     path('register/', views.register, name='register'),
     path('login/', views.login_user, name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page=reverse_lazy('home')), name='logout'),
     path('profile/', views.profile, name='profile'),
+    path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
     path('casino/', views.casino, name='casino')
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
