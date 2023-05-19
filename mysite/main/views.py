@@ -20,7 +20,9 @@ import uuid
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.contrib.sessions.models import Session
-
+from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 def index(request):
     return render(request, 'main/index.html')
 def cart(request):
@@ -175,4 +177,75 @@ def clear_cart(request):
     CartItem.objects.filter(user_id=user_id).delete()
 
     return redirect('cart')
+
+
+def payment_view(request):
+    if request.method == 'POST':
+        shipping_address = request.POST.get('shipping_address_input')
+        payment_method = request.POST.get('payment_method')
+        total = request.POST.get('total')
+
+        recipient_name = request.POST.get('recipient_name')
+        country = request.POST.get('country')
+        street_house_apartment = request.POST.get('street_house_apartment')
+        region = request.POST.get('region')
+        city = request.POST.get('city')
+        postal_code = request.POST.get('postal_code')
+        mobile_phone = request.POST.get('mobile_phone')
+
+        print('Адрес доставки:', shipping_address)
+        print('Метод оплаты:', payment_method)
+        print('Итого:', total)
+
+        if payment_method == 'mastercard':
+            return render(request, 'main/payment.html', {
+                'total': total,
+                'shipping_address': shipping_address,
+                'payment_method': 'Mastercard',
+                'recipient_name': recipient_name,
+                'country': country,
+                'street_house_apartment': street_house_apartment,
+                'region': region,
+                'city': city,
+                'postal_code': postal_code,
+                'mobile_phone': mobile_phone
+            })
+        elif payment_method == 'bitcoin':
+            return render(request, 'main/payment.html', {
+                'total': total,
+                'shipping_address': shipping_address,
+                'payment_method': 'Bitcoin',
+                'recipient_name': recipient_name,
+                'country': country,
+                'street_house_apartment': street_house_apartment,
+                'region': region,
+                'city': city,
+                'postal_code': postal_code,
+                'mobile_phone': mobile_phone
+            })
+
+    return render(request, 'main/payment.html')
+
+
+def mastercard(request, total, shipping_address):
+    context = {
+        'total': total,
+        'shipping_address': shipping_address
+    }
+    return render(request, 'main/mastercard.html', context)
+
+def bitcoin(request, total, shipping_address):
+    context = {
+        'total': total,
+        'shipping_address': shipping_address
+    }
+    return render(request, 'main/bitcoin.html', context)
+
+
+
+
+
+
+
+
 
