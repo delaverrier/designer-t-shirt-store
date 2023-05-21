@@ -1,56 +1,54 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>GU.com</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'main/css/bones.css'%}">
-</head>
-<body>
-    <header class="site-header">
-        <div class="container d-flex flex-column justify-content-center align-items-center">
-            <h1>GU</h1>
-            <h6>Paris</h6>
-        </div>
-    </header>
-    <div class ='back'>
-        <button onclick="window.history.back()">
-            <span>
-                back
-            </span>
-        </button>
-    </div>
-    <section class="photos">
-        <div>
-            <img src="{% static 'main/img/number2.jpg' %}">
-        </div>
-    </section>
+	<head>
+		<meta charset="utf-8" />
+		<title>GU.com</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="{% static 'main/css/bones.css'%}" />
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="container d-flex flex-column justify-content-center align-items-center">
+				<h1>GU</h1>
+				<h6>Paris</h6>
+			</div>
+		</header>
+		<div class="back">
+			<button onclick="window.history.back()">
+				<span>
+					back
+				</span>
+			</button>
+		</div>
+		<section class="photos">
+			<div>
+				<img src="{% static 'main/img/number2.jpg' %}" />
+			</div>
+		</section>
 
-   <section class="photos">
-    <div>
-        <h1>Price: ${{ item.price }}</h1>
-        <h4>Composition: 95% cotton and 5% elastane</h4>
-    </div>
-</section>
+		<section class="photos">
+			<div>
+				<h1>Price: ${{ item.price }}</h1>
+				<h4>Composition: 95% cotton and 5% elastane</h4>
+			</div>
+		</section>
 
+		<div class="add">
+			<form method="post" action="{% url 'add_to_cart' item.id %}">
+				{% csrf_token %}
+				<input type="hidden" name="price" value="{{ item.price }}" />
+				<button type="submit">Add to Cart</button>
+			</form>
+		</div>
 
-<div class="add">
-<form method="post" action="{% url 'add_to_cart' item.id %}">
-  {% csrf_token %}
-  <input type="hidden" name="price" value="{{ item.price }}">
-  <button type="submit">Add to Cart</button>
-</form>
-
-</div>
-
-
-<footer class="site-footer">
-    <div class="container">
-        <p>© GU, 2023</p>
-        <p>The first fashion house in Russia</p>
-    </div>
-</footer>
-</body>
+		<footer class="site-footer">
+			<div class="container">
+				<p>© GU, 2023</p>
+				<p>The first fashion house in Russia</p>
+			</div>
+		</footer>
+	</body>
 </html>
+
 

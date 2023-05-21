@@ -39,3 +39,22 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+
+
+
+class Order(models.Model):
+    order_number = models.AutoField(primary_key=True)
+    shipping_address = models.CharField(max_length=255)
+    payment_method = models.CharField(max_length=255)
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+    recipient_name = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
+    street_house_apartment = models.CharField(max_length=255)
+    region = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    postal_code = models.CharField(max_length=20)
+    mobile_phone = models.CharField(max_length=20)
+    bitcoin_address = models.CharField(max_length=255, null=True, blank=True)
+    bitcoin_amount = models.DecimalField(max_digits=10, decimal_places=8, null=True, blank=True)
+

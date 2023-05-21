@@ -4,6 +4,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import save_order
 
 urlpatterns = [
     path('',views.index, name='home'),
@@ -18,8 +19,6 @@ urlpatterns = [
     path('clear-cart/', views.clear_cart, name='clear_cart'),
     path('register/', views.register, name='register'),
     path('login/', views.login_user, name='login'),
-    path('mastercard/<str:total>/<str:shipping_address>/', views.mastercard, name='mastercard'),
-    path('bitcoin/<str:total>/<str:shipping_address>/', views.bitcoin, name='bitcoin'),
     path('logout/', auth_views.LogoutView.as_view(next_page=reverse_lazy('home')), name='logout'),
     path('profile/', views.profile, name='profile'),
     path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),

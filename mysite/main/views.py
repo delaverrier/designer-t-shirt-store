@@ -23,6 +23,12 @@ from django.contrib.sessions.models import Session
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+import requests
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Order
+import requests
+
 def index(request):
     return render(request, 'main/index.html')
 def cart(request):
@@ -179,6 +185,10 @@ def clear_cart(request):
     return redirect('cart')
 
 
+
+
+
+
 def payment_view(request):
     if request.method == 'POST':
         shipping_address = request.POST.get('shipping_address_input')
@@ -192,12 +202,32 @@ def payment_view(request):
         city = request.POST.get('city')
         postal_code = request.POST.get('postal_code')
         mobile_phone = request.POST.get('mobile_phone')
-
+        bitcoin_address = request.POST.get('bitcoin_address')
+        bitcoin_amount = 0.0
         print('Адрес доставки:', shipping_address)
         print('Метод оплаты:', payment_method)
         print('Итого:', total)
 
+        # Создание нового объекта Order и сохранение его в базе данных
+        order = Order.objects.create(
+            shipping_address=shipping_address,
+            payment_method=payment_method,
+            total=total,
+            recipient_name=recipient_name,
+            country=country,
+            street_house_apartment=street_house_apartment,
+            region=region,
+            city=city,
+            postal_code=postal_code,
+            mobile_phone=mobile_phone,
+            bitcoin_address=bitcoin_address,
+            bitcoin_amount=bitcoin_amount
+        )
+        order.save()
+
         if payment_method == 'mastercard':
+            mastercard_numbers = '1234 4567 8910 1112'
+            total_rubles = convert_to_rubles(float(total))
             return render(request, 'main/payment.html', {
                 'total': total,
                 'shipping_address': shipping_address,
@@ -208,9 +238,14 @@ def payment_view(request):
                 'region': region,
                 'city': city,
                 'postal_code': postal_code,
-                'mobile_phone': mobile_phone
+                'mobile_phone': mobile_phone,
+                'total_rubles': total_rubles,
+                'mastercard_numbers': mastercard_numbers
             })
+
         elif payment_method == 'bitcoin':
+            bitcoin_address = 'bc1qapp6jgy5x6ql0kn9y5chker2svwt5jzn8m8esn'
+            bitcoin_amount = convert_to_bitcoin(float(total))
             return render(request, 'main/payment.html', {
                 'total': total,
                 'shipping_address': shipping_address,
@@ -221,31 +256,68 @@ def payment_view(request):
                 'region': region,
                 'city': city,
                 'postal_code': postal_code,
-                'mobile_phone': mobile_phone
+                'mobile_phone': mobile_phone,
+                'bitcoin_address': bitcoin_address,
+                'bitcoin_amount': bitcoin_amount
             })
 
-    return render(request, 'main/payment.html')
-
-
-def mastercard(request, total, shipping_address):
-    context = {
+    return render(request, 'main/payment.html', {
         'total': total,
-        'shipping_address': shipping_address
-    }
-    return render(request, 'main/mastercard.html', context)
-
-def bitcoin(request, total, shipping_address):
-    context = {
-        'total': total,
-        'shipping_address': shipping_address
-    }
-    return render(request, 'main/bitcoin.html', context)
-
-
-
-
+        'shipping_address': shipping_address,
+        'payment_method': payment_method,
+        'recipient_name': recipient_name,
+        'country': country,
+        'street_house_apartment': street_house_apartment,
+        'region': region,
+        'city': city,
+        'postal_code': postal_code,
+        'mobile_phone': mobile_phone,
+        'bitcoin_address': bitcoin_address,
+        'bitcoin_amount': bitcoin_amount
+    })
 
 
+def convert_to_bitcoin(amount):
+    url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd'
+    response = requests.get(url)
+    data = response.json()
+
+    if 'bitcoin' in data and 'usd' in data['bitcoin']:
+        bitcoin_usd_price = data['bitcoin']['usd']
+        bitcoin_amount = amount / bitcoin_usd_price
+        return bitcoin_amount
+
+    return 0.0
 
 
+def convert_to_rubles(total):
+    url = 'https://api.coingecko.com/api/v3/simple/price?ids=usd&vs_currencies=rub'
+    response = requests.get(url)
+    data = response.json()
 
+    if 'usd' in data and 'rub' in data['usd']:
+        usd_rub_exchange_rate = data['usd']['rub']
+        total_rubles = total * usd_rub_exchange_rate
+        return total_rubles
+
+    return 0.0
+
+def save_order(shipping_address, payment_method, total, recipient_name, country,
+               street_house_apartment, region, city, postal_code, mobile_phone,
+               bitcoin_address='', bitcoin_amount=0.0):
+    # Создание нового объекта Order и сохранение его в базе данных
+    order = Order.objects.create(
+        shipping_address=shipping_address,
+        payment_method=payment_method,
+        total=total,
+        recipient_name=recipient_name,
+        country=country,
+        street_house_apartment=street_house_apartment,
+        region=region,
+        city=city,
+        postal_code=postal_code,
+        mobile_phone=mobile_phone,
+        bitcoin_address=bitcoin_address,
+        bitcoin_amount=bitcoin_amount
+    )
+    order.save()

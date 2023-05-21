@@ -1,60 +1,104 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Payment</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'main/css/payment.css' %}">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Payment</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="{% static 'main/css/payment.css' %}" />
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/js/bootstrap.bundle.min.js" integrity="sha384-ug9fc2i/tq7In4N4VYexb6Lm+UjXcTAqZD0lZbLYo4aOiW56Q/mak5+eU+XHvFh/" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
-</head>
-<body>
-    <header class="site-header">
-        <div class="container d-flex flex-column justify-content-center align-items-center">
-            <h1>GU</h1>
-            <h6>Paris</h6>
-        </div>
-    </header>
-    <div class="back">
-        <button onclick="window.history.back()">
-            <span>
-                back
-            </span>
-        </button>
-    </div>
-<div class="payment-details">
-  <h2 class="styled-heading">Детали заказа</h2>
-  <p class="styled-text">Итого: ${{ total }}</p>
-  <p class="styled-text">Адрес доставки: {{ shipping_address }}</p>
-  <p class="styled-text">Имя получателя: {{ recipient_name }}</p>
-  <p class="styled-text">Страна: {{ country }}</p>
-  <p class="styled-text">Улица, дом, квартира: {{ street_house_apartment }}</p>
-  <p class="styled-text">Регион: {{ region }}</p>
-  <p class="styled-text">Город: {{ city }}</p>
-  <p class="styled-text">Почтовый индекс: {{ postal_code }}</p>
-  <p class="styled-text">Номер телефона: {{ mobile_phone }}</p>
-  <p class="styled-text">Метод оплаты: {{ payment_method }}</p>
-</div>
+		<style>
+			.fab.fa-telegram { color: #0088cc; }
+		</style>
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="container d-flex flex-column justify-content-center align-items-center">
+				<h1>GU</h1>
+				<h6>Paris</h6>
+			</div>
+		</header>
+		<div class="back">
+			<button onclick="window.history.back()">
+				<span>
+					back
+				</span>
+			</button>
+		</div>
+		<div class="payment-details">
+			<h2 class="styled-heading">Детали заказа</h2>
+			<p class="styled-text">Итого: ${{ total }}</p>
+			<p class="styled-text">Адрес доставки: {{ shipping_address }}</p>
+			<p class="styled-text">Имя получателя: {{ recipient_name }}</p>
+			<p class="styled-text">Страна: {{ country }}</p>
+			<p class="styled-text">Улица, дом, квартира: {{ street_house_apartment }}</p>
+			<p class="styled-text">Регион: {{ region }}</p>
+			<p class="styled-text">Город: {{ city }}</p>
+			<p class="styled-text">Почтовый индекс: {{ postal_code }}</p>
+			<p class="styled-text">Номер телефона: {{ mobile_phone }}</p>
+			<p class="styled-text">Метод оплаты: {{ payment_method }}</p>
+		</div>
 
+		<div class="buy">
+			<button id="payButton" type="button" data-bs-toggle="modal" data-bs-target="#paymentModal">
+				<span>Confirm</span>
+			</button>
+		</div>
 
-      <div class="buy">
-        <button onclick="window.history.back()">
-            <span>
-                buy
-            </span>
-        </button>
-    </div>
+		<footer class="site-footer">
+			<div class="container">
+				<p>© GU, 2023</p>
+				<p>The first fashion house in Russia</p>
+			</div>
+		</footer>
 
-<footer class="site-footer">
-  <div class="container">
-    <p>© GU, 2023</p>
-    <p>The first fashion house in Russia</p>
-  </div>
-</footer>
+		<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true" data-bs-backdrop="static">
+			<form id="orderForm" method="post">
+				{% csrf_token %}
+				<div class="modal-dialog modal-dialog-centered modal-custom">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="paymentModalLabel">Payment Details</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<p>Total Amount: ${{ total }}</p>
+							{% if payment_method == 'Bitcoin' %}
+							<p>Payment Method: {{ payment_method }}</p>
+							<p>Bitcoin Address for Transfer: <span id="bitcoinAddress">{{ bitcoin_address }}</span></p>
+							<p>Converted Total in Bitcoin: <span id="bitcoin_amount">{{ bitcoin_amount }}</span></p>
+							<p>
+								After completing the payment, please send the photo to <a href="https://t.me/de_la_verrier" target="_blank"><i class="fab fa-telegram fa-fw"></i></a> as shown below:
+							</p>
+							<img src="{% static 'main/img/sample_photo.jpg' %}" class="sample_photo" />
+							<p>Wait for further instructions after sending the photo.</p>
+							{% else %}
+							<p>Payment Method: {{ payment_method }}</p>
+							<p>Mastercard: <span id="mastercard_numbers">{{ mastercard_numbers }}</span></p>
+							<p>Converted Total in Rubles: <span id="total_rubles">{{ total_rubles }}</span></p>
+							<p>
+								After completing the payment, please send the photo to <a href="https://t.me/de_la_verrier" target="_blank"><i class="fab fa-telegram fa-fw"></i></a> as shown below:
+							</p>
+							<img src="{% static 'main/img/sample_photo.jpg' %}" class="sample_photo" />
+							<p>Wait for further instructions after sending the photo.</p>
+							{% endif %}
+						</div>
+						<div class="modal-footer">
+							<!--<button id="paymentCompleteButton" type="submit" class="add">Complete Payment</button>-->
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
 
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{% static 'main/js/payment.js' %}"></script>
-</body>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="{% static 'main/js/payment.js' %}"></script>
+	</body>
 </html>
 
