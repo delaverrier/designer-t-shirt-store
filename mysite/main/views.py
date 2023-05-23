@@ -62,19 +62,20 @@ def login_user(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')  # Перенаправление на домашнюю страницу после успешной аутентификации
+                return redirect('home')
     else:
         form = AuthenticationForm(request)
     return render(request, 'main/login.html', {'form': form})
 
 
 class RegisterUser(CreateView):
-    form_class = UserCreationForm
+    form_class = RegisterUserForm
     template_name = 'main/register.html'
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
         response = super().form_valid(form)
+        Profile.objects.create(user=self.object)
         return response
 
 class LoginUser(LoginView):
