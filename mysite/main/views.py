@@ -1,59 +1,57 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
-from .forms import *
-from .models import *
-from .forms import ProfileForm
-from django.conf import settings
+from django.contrib.auth import authenticate, login, get_user
 from django.core.files.storage import FileSystemStorage
-from .models import Product, CartItem
-from django.contrib.auth import get_user
+from django.conf import settings
+from .forms import RegisterUserForm, ProfileForm
+from .models import UserProfile, Profile, Product, CartItem, Order
 import uuid
 from django.contrib.auth.models import User
-from django.shortcuts import redirect
 from django.contrib.sessions.models import Session
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-import requests
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import Order
 import requests
 
+
 def index(request):
+    ''' Отображает главную страницу приложения '''
     return render(request, 'main/index.html')
-def cart(request):
-    return render(request, 'main/cart.html')
 def lovers(request):
+    ''' отображает страницу с информацией о lovers продукте с идентификатором 1 '''
     product = Product.objects.get(pk=1)
     return render(request, 'main/lovers.html',{'item': product})
 def bones(request):
+    ''' отображает страницу с информацией о bones продукте с идентификатором 1 '''
     product = Product.objects.get(pk=2)
     return render(request, 'main/bones.html',{'item': product})
 
 def devil(request):
+    ''' отображает страницу с информацией о devil продукте с идентификатором 1 '''
     product = Product.objects.get(pk=3)
     return render(request, 'main/devil.html', {'item': product})
 
 
 def about(request):
+    ''' Отображает страницу с информацией о компании '''
     return render(request, 'main/about.html')
 
 def service(request):
+    ''' Отображает страницу с информацией о предоставляемых услугах '''
     return render(request, 'main/service.html')
 
 def contacts(request):
+    ''' Отображает страницу с контактной информацией '''
     return render(request, 'main/contacts.html')
 def login_user(request):
+    ''' Обрабатывает запрос на вход пользователя в систему.
+     Если запрос отправлен методом POST и данные формы валидны,
+    производится аутентификация пользователя и перенаправление на главную страницу.
+    В противном случае отображается страница входа с формой аутентификации '''
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -69,44 +67,65 @@ def login_user(request):
 
 
 class RegisterUser(CreateView):
+    ''' Представляет форму регистрации пользователя.
+    При валидации формы происходит сохранение нового пользователя
+    и автоматический вход в систему '''
     form_class = RegisterUserForm
     template_name = 'main/register.html'
-    success_url = reverse_lazy('login')
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        Profile.objects.create(user=self.object)
+        user = form.save()
+        login(self.request, user)  # Автоматический вход пользователя
         return response
 
 class LoginUser(LoginView):
+    ''' Представляет форму входа пользователя.
+    После успешной аутентификации пользователь перенаправляется
+    на главную страницу. '''
     template_name = 'main/login.html'
     success_url = reverse_lazy('home')
 
 class LogoutUser(LogoutView):
+    ''' Представляет функциональность выхода пользователя из системы. '''
     next_page = reverse_lazy('login')
 
 def register(request):
+    ''' Обрабатывает запрос на регистрацию пользователя.
+    Если запрос отправлен методом POST и данные формы валидны,
+    производится сохранение нового пользователя и автоматический вход в систему,
+    после чего пользователь перенаправляется на главную страницу.
+    В противном случае отображается страница регистрации с формой. '''
     if request.method == 'POST':
         form = RegisterUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('home')  # перенаправляем пользователя на страницу входа после успешной регистрации
+            user = form.save()
+            login(request, user)  # Автоматический вход пользователя
+            return redirect('home')
     else:
         form = RegisterUserForm()
     return render(request, 'main/register.html', {'form': form})
 
 @login_required
 def profile(request):
+    ''' Отображает страницу профиля пользователя.
+    Если запрос отправлен методом POST и данные формы валидны,
+    происходит сохранение профиля пользователя.
+    Если профиль уже существует, он обновляется.
+    Если профиля нет, создается новый.
+    После сохранения профиля пользователь перенаправляется на страницу профиля. '''
     user = request.user
     profile = user.profile if hasattr(user, 'profile') else None
 
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            form.save()
+            profile = form.save(commit=False)
+            profile.user = user  # Set the user for the profile
+            profile.save()
             return redirect('profile')
     else:
-        form = ProfileForm(instance=profile)
+        form = ProfileForm(instance=profile, initial={'user': user})
 
     context = {
         'form': form,
@@ -116,6 +135,11 @@ def profile(request):
 
 @login_required
 def edit_profile(request):
+    '''  Отображает страницу редактирования профиля пользователя.
+    Если запрос отправлен методом POST и данные формы валидны, происходит сохранение профиля пользователя.
+    Если профиль уже существует, он обновляется.
+    Если профиля нет, создается новый.
+    После сохранения профиля пользователь перенаправляется на страницу профиля. '''
     user = request.user
     profile = user.profile if hasattr(user, 'profile') else None
 
@@ -138,10 +162,17 @@ def edit_profile(request):
 
 
 def casino(request):
+    ''' Отображает страницу с игрой в казино.
+     Сейчас отключил'''
     return render(request, 'main/casino.html')
 
 
 def add_to_cart(request, product_id):
+    ''' Добавляет товар с заданным идентификатором в корзину пользователя.
+    Если пользователь не авторизован, ему создается новая учетная запись и идентификатор сохраняется в сессии.
+    Затем происходит добавление товара в корзину.
+    Если товар уже присутствует в корзине, увеличивается его количество.
+    Затем происходит перенаправление на страницу корзины. '''
     user_id = request.session.get('user_id')
     if not user_id:
         user = User.objects.create_user(username=str(uuid.uuid4()), password='')
@@ -163,6 +194,9 @@ def add_to_cart(request, product_id):
 
 
 def cart(request):
+    ''' Отображает страницу корзины пользователя.
+    Если пользователь авторизован, отображаются все товары в его корзине.
+    Иначе отображается пустая корзина. '''
     user_id = request.session.get('user_id')
     if user_id:
         user = User.objects.get(id=user_id)
@@ -175,6 +209,9 @@ def cart(request):
 
 
 def clear_cart(request):
+    ''' Очищает корзину пользователя.
+    Если пользователь не авторизован, ему создается новая учетная запись и идентификатор сохраняется в сессии.
+    Затем происходит удаление всех товаров из корзины и перенаправление на страницу корзины. '''
     user_id = request.session.get('user_id')
     if not user_id:
         user = User.objects.create_user(username=str(uuid.uuid4()), password='')
@@ -185,12 +222,12 @@ def clear_cart(request):
 
     return redirect('cart')
 
-
-
-
-
-
 def payment_view(request):
+    ''' Отображает страницу оплаты заказа.
+    Если запрос отправлен методом POST, происходит обработка данных, введенных пользователем, и создание нового объекта заказа в базе данных.
+    Затем в зависимости от выбранного метода оплаты происходит отображение страницы с информацией о платеже, включая адрес доставки и итоговую сумму заказа.
+    В случае выбора оплаты с помощью Mastercard отображаются дополнительные данные (номера карты).
+    В случае выбора оплаты с помощью Bitcoin отображаются дополнительные данные (адрес Bitcoin и сумма в Bitcoin). '''
     if request.method == 'POST':
         shipping_address = request.POST.get('shipping_address_input')
         payment_method = request.POST.get('payment_method')
@@ -279,6 +316,7 @@ def payment_view(request):
 
 
 def convert_to_bitcoin(amount):
+    ''' Выполняет конвертацию суммы из основной валюты в Bitcoin, используя текущий курс обмена. '''
     url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd'
     response = requests.get(url)
     data = response.json()
@@ -292,6 +330,7 @@ def convert_to_bitcoin(amount):
 
 
 def convert_to_rubles(total):
+    ''' Выполняет конвертацию суммы из основной валюты в рубли, используя текущий курс обмена. '''
     url = 'https://api.coingecko.com/api/v3/simple/price?ids=usd&vs_currencies=rub'
     response = requests.get(url)
     data = response.json()
@@ -306,7 +345,7 @@ def convert_to_rubles(total):
 def save_order(shipping_address, payment_method, total, recipient_name, country,
                street_house_apartment, region, city, postal_code, mobile_phone,
                bitcoin_address='', bitcoin_amount=0.0):
-    # Создание нового объекта Order и сохранение его в базе данных
+    ''' Создание нового объекта Order и сохранение его в базе данных '''
     order = Order.objects.create(
         shipping_address=shipping_address,
         payment_method=payment_method,

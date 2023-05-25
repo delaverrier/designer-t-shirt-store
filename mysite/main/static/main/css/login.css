@@ -65,10 +65,9 @@ button:hover::before {
     top: 95px;
     left: 100px;
 }
-
 .site-footer {
   position: absolute;
-  bottom: -150px;
+  bottom: 10px;
   left: 0;
   width: 100%;
   text-align: center;
@@ -79,3 +78,111 @@ button:hover::before {
 .site-footer .container {
   max-width: 960px;
   margin: 0 auto;
+}
+
+.card {
+  width: 400px;
+  height: 400px;
+  background: white;
+  border-radius: 10px;
+  transition: border-radius 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin: 150px auto;
+}
+
+.shadow {
+  box-shadow: inset 0 -3em 3em rgba(0,0,0,0.1),
+              0 0  0 2px rgb(190, 190, 190),
+              0.3em 0.3em 1em rgba(0,0,0,0.3);
+}
+
+
+.container form button[type="submit"] {
+  outline: none;
+  cursor: pointer;
+  border: none;
+  padding: 0.9rem 2rem;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: 0.05rem;
+  font-weight: 700;
+  border-radius: 500px;
+  overflow: hidden;
+  background: #000;
+  color: ghostwhite;
+}
+
+.container form button[type="submit"]:hover {
+  color: black;
+}
+
+.container form button[type="submit"] span {
+  position: relative;
+  z-index: 10;
+  transition: color 0.4s;
+}
+
+.container form button[type="submit"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #66ff66;
+  z-index: -1;
+  transform: scale(0);
+}
+
+.container form button[type="submit"]:hover::before {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.login-link {
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+.login {
+    position: relative;
+    top: 30px;
+    display: flex;
+    justify-content: center;
+    margin-top: -20px;
+    margin-left: 30px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.signup-title {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="password"]:focus {
+  outline: none;
+  box-shadow: 0 0 5px #7fc7ed;
+}

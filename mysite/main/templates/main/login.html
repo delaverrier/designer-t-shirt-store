@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,21 +22,27 @@
         </span>
     </button>
 </div>
+
+
+    <div class="card shadow">
     <div class="container">
-        <h2>Login</h2>
+        <h2 class="signup-title">Sign in to your account</h2>
         <form method="post">
             {% csrf_token %}
-
             {% for field in form %}
                 <div class="form-group">
                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                     {{ field }}
                 </div>
             {% endfor %}
-
-            <button type="submit">Войти</button>
+            <button type="submit" class="login">Войти</button>
         </form>
+        <div class="login-link">
+            <p>No account? <a href="{% url 'register' %}">Sign up</a></p>
+        </div>
     </div>
+    </div>
+
 
     <footer class="site-footer">
         <div class="container">

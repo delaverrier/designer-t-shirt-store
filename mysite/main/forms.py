@@ -13,5 +13,8 @@ class RegisterUserForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('first_name', 'last_name', 'avatar')
+        fields = ('user', 'first_name', 'last_name', 'avatar')
+        widgets = {
+            'user': forms.HiddenInput(),
+        }
 
