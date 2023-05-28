@@ -125,7 +125,7 @@ body {
   transition: transform 0.3s ease-in-out;
 }
 */
-#scrollButton {
+button#scrollButton {
   display: none;
   position: fixed;
   bottom: 20px;
@@ -135,18 +135,39 @@ body {
   font-size: 18px;
   border: none;
   outline: none;
-  background-color: #f2f2f2;
-  color: black;
+  background-color: black;
+  color: white;
   cursor: pointer;
   padding: 5px;
   border-radius: 50%;
   width: 50px;
   height: 50px;
+  transition: background-color 0.3s, color 0.3s;
 }
-#scrollButton:hover {
-  background-color: #555;
+
+button#scrollButton:hover,
+button#scrollButton:focus {
+  background-color: #66ff66;
   color: white;
 }
+
+button#scrollButton .arrow-up {
+  position: relative;
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid white;
+  border-right: 2px solid white;
+  transform: rotate(-45deg);
+  margin: 19px auto;
+  transition: opacity 0.3s;
+  opacity: 1;
+}
+
+button#scrollButton.up .arrow-up {
+  opacity: 1;
+}
+
 
 .home-btn {
     margin-left: 130px;

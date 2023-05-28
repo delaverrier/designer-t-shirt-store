@@ -261,3 +261,7 @@ button:hover::before {
     margin-right: auto;
     margin-bottom: 50px; /* Регулируйте значение для получения желаемого отступа */
   }
+
+body {
+  overflow: hidden;
+}

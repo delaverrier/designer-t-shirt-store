@@ -73,7 +73,7 @@ button:hover::before {
 
 .site-footer {
   position: absolute;
-  bottom: -150px;
+  bottom: -100px;
   left: 0;
   width: 100%;
   text-align: center;
