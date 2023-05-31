@@ -22,8 +22,8 @@ section.description {
   position: relative;
   margin-bottom: 20px;
   width: 30%;
-  margin-left: auto; /* Move the photo items to the right */
-  margin-right: auto; /* Move the photo items to the left */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .photos img {
@@ -119,12 +119,6 @@ body {
   background-color: #7fc7ed;
 }
 
-/*
-.photos img:hover {
-  transform: scale(1.1);            косяк при наводке увелич мастаб фото при наведение
-  transition: transform 0.3s ease-in-out;
-}
-*/
 button#scrollButton {
   display: none;
   position: fixed;
@@ -193,5 +187,181 @@ button#scrollButton.up .arrow-up {
 .profile-btn {
     margin-left: 1400px;
 }
+.chat-window {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 400px;
+  height: 450px;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: none;
+  z-index: 9999;
+  user-select: none;
+}
+
+.chat-header {
+  background-color: #ccc;
+  padding: 10px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+  user-select: none;
+  position: relative;
+}
+
+.chat-header h3 {
+  margin: 0;
+}
+
+.chat-body {
+  padding: 10px;
+  height: 300px;
+  overflow-y: auto;
+}
+
+.chat-footer {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-footer input[type="text"] {
+  flex: 1;
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+.chat-footer button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.message-button {
+  position: fixed;
+  bottom: 20px;
+  left: 1850px;
+  z-index: 999;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  width: 70px;
+  height: 70px;
+  outline: none;
+  cursor: pointer;
+}
+
+.message-button:focus,
+.message-button:hover {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.message-button .fas {
+  color: #000;
+  font-size: 40px;
+  transition: none;
+}
+.message-button::before {
+  content: none !important;
+}
+
+
+
+.btn-close {
+  position: absolute;
+  top: 5px;
+  left: 380px;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  font-size: 1.5rem;
+  line-height: 1;
+  opacity: 0.5;
+}
+
+
+
+.btn-close::before {
+  display: none;
+}
+
+.btn-close:focus {
+  outline: none;
+}
+
+.form-group input[type="text"]{
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+}
+
+.form-group input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 5px #7fc7ed;
+}
+.form-group{
+    margin-top: 30px;
+    width: 100%;
+}
+
+.button-group {
+  position: absolute;
+  top: 340px;
+  left: 280px;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
+.button-group::before {
+  display: none;
+}
+
+.btn.btn-link.attachment-button {
+  position: absolute;
+  top: 380px;
+  left: 360px;
+  margin: 0;
+  border: none;
+  padding: 0;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  line-height: 1;
+  opacity: 1;
+  color: #959595;
+  background-color: transparent;
+  transition: none;
+}
+
+.btn.btn-link.attachment-button:hover {
+  opacity: 1;
+}
+
+.btn.btn-link.attachment-button::before {
+  display: none;
+}
+
+.chat-header .chat-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 
 

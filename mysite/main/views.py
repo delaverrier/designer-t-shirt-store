@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseRedirect, JsonResponse
@@ -361,3 +363,5 @@ def save_order(shipping_address, payment_method, total, recipient_name, country,
         bitcoin_amount=bitcoin_amount
     )
     order.save()
+
+
