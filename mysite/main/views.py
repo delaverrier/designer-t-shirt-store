@@ -18,7 +18,8 @@ import uuid
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 import requests
-
+import codecs
+import json
 
 def index(request):
     ''' Отображает главную страницу приложения '''
@@ -234,7 +235,6 @@ def payment_view(request):
         shipping_address = request.POST.get('shipping_address_input')
         payment_method = request.POST.get('payment_method')
         total = request.POST.get('total')
-
         recipient_name = request.POST.get('recipient_name')
         country = request.POST.get('country')
         street_house_apartment = request.POST.get('street_house_apartment')
@@ -280,6 +280,7 @@ def payment_view(request):
                 'postal_code': postal_code,
                 'mobile_phone': mobile_phone,
                 'total_rubles': total_rubles,
+                'order_number': order.order_number,
                 'mastercard_numbers': mastercard_numbers
             })
 
@@ -298,6 +299,7 @@ def payment_view(request):
                 'postal_code': postal_code,
                 'mobile_phone': mobile_phone,
                 'bitcoin_address': bitcoin_address,
+                'order_number': order.order_number,
                 'bitcoin_amount': bitcoin_amount
             })
 
@@ -312,6 +314,7 @@ def payment_view(request):
         'city': city,
         'postal_code': postal_code,
         'mobile_phone': mobile_phone,
+        'order_number': order.order_number,
         'bitcoin_address': bitcoin_address,
         'bitcoin_amount': bitcoin_amount
     })
@@ -340,9 +343,10 @@ def convert_to_rubles(total):
     if 'usd' in data and 'rub' in data['usd']:
         usd_rub_exchange_rate = data['usd']['rub']
         total_rubles = total * usd_rub_exchange_rate
-        return total_rubles
+        return round(total_rubles)
 
-    return 0.0
+    return 0
+
 
 def save_order(shipping_address, payment_method, total, recipient_name, country,
                street_house_apartment, region, city, postal_code, mobile_phone,
@@ -365,3 +369,27 @@ def save_order(shipping_address, payment_method, total, recipient_name, country,
     order.save()
 
 
+def get_order_info(request, order_number):
+    if request.method == 'GET':
+        try:
+            order = Order.objects.get(order_number=order_number)
+            order_info = {
+                'shipping_address': order.shipping_address,
+                'payment_method': order.payment_method,
+                'total': str(order.total),
+                'recipient_name': order.recipient_name,
+                'country': order.country,
+                'street_house_apartment': order.street_house_apartment,
+                'region': order.region,
+                'city': order.city,
+                'postal_code': order.postal_code,
+                'mobile_phone': order.mobile_phone[-4:],
+                'bitcoin_address': order.bitcoin_address,
+                'bitcoin_amount': convert_to_bitcoin(float(order.total)),
+                'total_rubles': convert_to_rubles(float(order.total))
+            }
+            return HttpResponse(json.dumps(order_info, ensure_ascii=False))
+        except Order.DoesNotExist:
+            return JsonResponse({'error': 'Order does not exist'})
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
