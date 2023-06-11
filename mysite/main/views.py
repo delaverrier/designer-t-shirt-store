@@ -21,20 +21,26 @@ import requests
 import codecs
 import json
 
+
 def index(request):
     ''' Отображает главную страницу приложения '''
     return render(request, 'main/index.html')
+
+
 def lovers(request):
     ''' отображает страницу с информацией о lovers продукте с идентификатором 1 '''
     product = Product.objects.get(pk=1)
-    return render(request, 'main/lovers.html',{'item': product})
+    return render(request, 'main/lovers.html', {'item': product})
+
+
 def bones(request):
-    ''' отображает страницу с информацией о bones продукте с идентификатором 1 '''
+    ''' отображает страницу с информацией о bones продукте с идентификатором 2 '''
     product = Product.objects.get(pk=2)
-    return render(request, 'main/bones.html',{'item': product})
+    return render(request, 'main/bones.html', {'item': product})
+
 
 def devil(request):
-    ''' отображает страницу с информацией о devil продукте с идентификатором 1 '''
+    ''' отображает страницу с информацией о devil продукте с идентификатором 3 '''
     product = Product.objects.get(pk=3)
     return render(request, 'main/devil.html', {'item': product})
 
@@ -43,13 +49,17 @@ def about(request):
     ''' Отображает страницу с информацией о компании '''
     return render(request, 'main/about.html')
 
+
 def service(request):
     ''' Отображает страницу с информацией о предоставляемых услугах '''
     return render(request, 'main/service.html')
 
+
 def contacts(request):
     ''' Отображает страницу с контактной информацией '''
     return render(request, 'main/contacts.html')
+
+
 def login_user(request):
     ''' Обрабатывает запрос на вход пользователя в систему.
      Если запрос отправлен методом POST и данные формы валидны,
@@ -82,6 +92,7 @@ class RegisterUser(CreateView):
         login(self.request, user)  # Автоматический вход пользователя
         return response
 
+
 class LoginUser(LoginView):
     ''' Представляет форму входа пользователя.
     После успешной аутентификации пользователь перенаправляется
@@ -89,9 +100,11 @@ class LoginUser(LoginView):
     template_name = 'main/login.html'
     success_url = reverse_lazy('home')
 
+
 class LogoutUser(LogoutView):
     ''' Представляет функциональность выхода пользователя из системы. '''
     next_page = reverse_lazy('login')
+
 
 def register(request):
     ''' Обрабатывает запрос на регистрацию пользователя.
@@ -108,6 +121,7 @@ def register(request):
     else:
         form = RegisterUserForm()
     return render(request, 'main/register.html', {'form': form})
+
 
 @login_required
 def profile(request):
@@ -135,6 +149,7 @@ def profile(request):
         'profile': profile
     }
     return render(request, 'main/profile.html', context)
+
 
 @login_required
 def edit_profile(request):
@@ -224,6 +239,7 @@ def clear_cart(request):
     CartItem.objects.filter(user_id=user_id).delete()
 
     return redirect('cart')
+
 
 def payment_view(request):
     ''' Отображает страницу оплаты заказа.
@@ -368,7 +384,7 @@ def save_order(shipping_address, payment_method, total, recipient_name, country,
     )
     order.save()
 
-
+#В дальнешей нужно сделать эту функцию с @permission_required чтобы никто не смог открыть ее кроме тг бота или ботов к тому моменту
 def get_order_info(request, order_number):
     if request.method == 'GET':
         try:
@@ -376,17 +392,13 @@ def get_order_info(request, order_number):
             order_info = {
                 'shipping_address': order.shipping_address,
                 'payment_method': order.payment_method,
-                'total': str(order.total),
+                'total': int(order.total),
                 'recipient_name': order.recipient_name,
                 'country': order.country,
-                'street_house_apartment': order.street_house_apartment,
-                'region': order.region,
-                'city': order.city,
-                'postal_code': order.postal_code,
-                'mobile_phone': order.mobile_phone[-4:],
-                'bitcoin_address': order.bitcoin_address,
-                'bitcoin_amount': convert_to_bitcoin(float(order.total)),
-                'total_rubles': convert_to_rubles(float(order.total))
+                'mobile_phone': order.mobile_phone[-4:]
+                #'bitcoin_address': order.bitcoin_address,
+                #'bitcoin_amount': convert_to_bitcoin(float(order.total)),
+                #'total_rubles': convert_to_rubles(float(order.total))
             }
             return HttpResponse(json.dumps(order_info, ensure_ascii=False))
         except Order.DoesNotExist:

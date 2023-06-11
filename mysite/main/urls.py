@@ -5,8 +5,6 @@ from django.urls import reverse_lazy
 from django.conf import settings
 from django.conf.urls.static import static
 
-
-
 urlpatterns = [
     path('',views.index, name='home'),
     path('lovers/', views.lovers, name='lovers'),

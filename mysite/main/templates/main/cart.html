@@ -32,9 +32,9 @@
 				</div>
 				<div class="item-details">
 					<h3>{{ item.product.title }}</h3>
-					<p class="item-price">Price: ${{ item.price }}</p>
+					<p class="item-price">Price: {{ item.price }} ₽</p>
 					<p class="item-quantity">Quantity: {{ item.quantity }}</p>
-					<p class="item-subtotal">Subtotal: ${{ item.subtotal }}</p>
+					<p class="item-subtotal">Subtotal: {{ item.subtotal }} ₽</p>
 				</div>
 			</div>
 			{% empty %}
@@ -43,7 +43,7 @@
 		</div>
 
 		{% if cart_items %}
-		<div class="total">Total: ${{ total }}</div>
+		<div class="total">Total: ₽{{ total }}</div>
 		{% endif %} {% if cart_items %}
 		<div class="button-container">
 			<form action="{% url 'clear_cart' %}" method="post">

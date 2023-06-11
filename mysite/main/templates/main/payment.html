@@ -32,7 +32,7 @@
 		<div class="payment-details">
 			<h2 class="styled-heading">Детали заказа</h2>
 			<p class="styled-text">Номер заказа {{ order_number }}</p>
-			<p class="styled-text">Итого: ${{ total }}</p>
+			<p class="styled-text">Итого: ₽{{ total }}</p>
 			<p class="styled-text">Адрес доставки: {{ shipping_address }}</p>
 			<p class="styled-text">Имя получателя: {{ recipient_name }}</p>
 			<p class="styled-text">Страна: {{ country }}</p>
@@ -67,7 +67,7 @@
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
-							<p>Total Amount: ${{ total }}</p>
+							<p>Total Amount: ₽{{ total }}</p>
 							{% if payment_method == 'Bitcoin' %}
 							<p>Payment Method: {{ payment_method }}</p>
 							<p>Bitcoin Address for Transfer: <span id="bitcoinAddress">{{ bitcoin_address }}</span></p>
@@ -80,7 +80,7 @@
 							{% else %}
 							<p>Payment Method: {{ payment_method }}</p>
 							<p>Mastercard: <span id="mastercard_numbers">{{ mastercard_numbers }}</span></p>
-							<p>Converted Total in Rubles: <span id="total_rubles">{{ total_rubles }}</span></p>
+							<p>Converted Total in Rubles: <span id="total_rubles">{{ total }}</span></p>
 							<p>
 								After completing the payment, please send the photo to <a href="https://t.me/de_la_verrier" target="_blank"><i class="fab fa-telegram fa-fw"></i></a> as shown below:
 							</p>
