@@ -396,12 +396,30 @@ def get_order_info(request, order_number):
                 'recipient_name': order.recipient_name,
                 'country': order.country,
                 'mobile_phone': order.mobile_phone[-4:]
-                #'bitcoin_address': order.bitcoin_address,
-                #'bitcoin_amount': convert_to_bitcoin(float(order.total)),
-                #'total_rubles': convert_to_rubles(float(order.total))
             }
+
+            devil_price = 1666
+            bones_price = 2200
+            lovers_price = 2500
+
+            devil_count, bones_count, lovers_count = 0, 0, 0
+
+            total = order_info['total']
+            for i in range(total // devil_price + 1):
+                for j in range(total // bones_price + 1):
+                    k = (total - i * devil_price - j * bones_price) // lovers_price
+                    if (i * devil_price) + (j * bones_price) + (k * lovers_price) == total:
+                        devil_count, bones_count, lovers_count = i, j, k
+                        break
+
+            order_info['DEVIL'] = devil_count
+            order_info['BONES'] = bones_count
+            order_info['LOVERS'] = lovers_count
+
             return HttpResponse(json.dumps(order_info, ensure_ascii=False))
         except Order.DoesNotExist:
             return JsonResponse({'error': 'Order does not exist'})
     else:
         return JsonResponse({'error': 'Invalid request method'})
+
+
