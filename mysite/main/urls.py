@@ -23,7 +23,8 @@ urlpatterns = [
     path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
     path('get_order_info/<int:order_number>/', views.get_order_info, name='get_order_info'),
-    path('casino/', views.casino, name='casino')
+    path('casino/', views.casino, name='casino'),
+    path('submit_email/', views.submit_email, name='submit_email')
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
